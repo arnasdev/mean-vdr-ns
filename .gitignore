@@ -8,6 +8,13 @@ platforms/
 *.js
 !webpack.config.js
 
+# NodeJS Backend
+!/backend/*
+!/backend/controllers/*
+!/backend/middleware/*
+!/backend/models/*
+!/backend/routes/*
+
 # Logs
 logs
 *.log

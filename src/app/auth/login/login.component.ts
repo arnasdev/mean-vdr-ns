@@ -1,6 +1,8 @@
 import { Component } from "@angular/core";
 import { AuthService } from "../auth.service";
 import { RouterExtensions } from "nativescript-angular/router";
+import { ITnsOAuthTokenResult } from "nativescript-oauth2";
+import { Page } from "tns-core-modules/ui/page";
 
 @Component({
     selector: "ns-login",
@@ -11,7 +13,9 @@ export class LoginComponent {
     email: string = '';
     password: string = '';
 
-    constructor(public authService: AuthService, private routerExtensions: RouterExtensions) {}
+    constructor(private page: Page, public authService: AuthService, private routerExtensions: RouterExtensions) {
+        page.actionBarHidden = true;
+    }
 
     submit() {
         if(this.password === ""){
@@ -25,6 +29,9 @@ export class LoginComponent {
         if(this.email !== "" && this.password !== ""){
             this.authService.login(this.email, this.password);
         }
+    }
 
+    fbOauthLogin(){
+        this.authService.tnsOauthLogin("facebook");
     }
 }

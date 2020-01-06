@@ -23,6 +23,8 @@ import {
 } from "tns-core-modules/application-settings";
 import { NotificationService } from "../notification/notification.service";
 import { RouterExtensions } from "nativescript-angular/router";
+import { TnsOAuthClient, ITnsOAuthTokenResult } from "nativescript-oauth2";
+import { response } from "express";
 
 const BACKEND_URL = 'http://vdrapi-env.d5xyfzxdwi.eu-west-1.elasticbeanstalk.com/api/user/';
 // const BACKEND_URL = 'http://192.168.137.2:3000/api/user/';
@@ -33,11 +35,13 @@ let headers = new HttpHeaders(
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    private isAuthenticated = false;
     private token: string;
     private tokenTimer: NodeJS.Timer;
     private userId: string;
     private email: string;
+
+    private isAuthenticated = false;
+    private client: TnsOAuthClient = null;
     private authStatusListener = new Subject<boolean>();
 
     constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService, private routerExtensions: RouterExtensions,){}
@@ -167,6 +171,46 @@ export class AuthService {
     this.clearAuthData();
 
     this.routerExtensions.navigate(['/auth/login'], {clearHistory: true});
+  }
+
+  tnsOauthLogin(providerType) {
+      console.log("logging in");
+    this.client = new TnsOAuthClient(providerType);
+    console.log(providerType);
+
+    // return new Promise<ITnsOAuthTokenResult>((resolve, reject) => {
+        this.client.loginWithCompletion(
+            (tokenResult: ITnsOAuthTokenResult, error) => {
+                if(error){
+                    console.log(error);
+                } else {
+                    console.log(tokenResult);
+                }
+            }
+        );
+    //});
+  }
+
+  tnsOauthLogout(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+        if(this.client){
+            this.client.logoutWithCompletion(
+                (error) => {
+                    if(error){
+                        console.log("back to main page with error");
+                        console.log(error);
+                        reject(error);
+                    } else{
+                        console.log("back to main page with success");
+                        resolve();
+                    }
+                }
+            );
+        } else {
+            console.log("back to main page with success");
+            resolve();
+        }
+    });
   }
 
   private saveAuthData(token: string, userId: string, email: string) {
