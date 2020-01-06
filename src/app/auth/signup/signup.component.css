@@ -1,0 +1,77 @@
+.logo {
+    height:150px;
+}
+
+.body {
+    height: 100%;
+}
+
+.auth-input {
+    border-width: 2px;
+    margin: 10px;
+    background-color: rgba(245,245,245);
+    border-color:rgba(200,200,200);
+    border-radius: 10px;
+    color: rgba(100,100,100);
+    padding-left:50px;
+    margin-bottom:10rem;
+}
+
+.auth-text{
+    text-align:center;
+    font-weight: 600;
+    color: white;
+    margin-top:10rem;
+    font-size: 20rem;
+}
+
+.auth-or {
+    margin-top: 30px;
+    font-weight:400;
+    font-size: 19rem;
+}
+
+.auth-button {
+    margin-top: 20rem;
+    width: 350px;
+    border-radius: 100px;
+    font-weight: 600;
+    background-color: white;
+    color: #3099e9;
+}
+
+.auth-facebook {
+    color: white;
+    background-color:rgb(59, 89, 152);
+    border-width: 0px;
+}
+
+.auth-signup {
+    color: white;
+    background-color:white;
+    color: #3099e9;
+    border-width: 0px;
+    border-color: rgb(200,200,200);
+}
+
+.auth-text.lower{
+    margin-top: 50px;
+
+}
+
+
+.auth-text.login{
+font-size: 20px;
+color: rgb(253, 208, 243);
+margin-top:0px;
+}
+
+
+/* .auth-hr {
+    background-color: rgb(200,200,200);
+    margin-top: 30px;
+} */
+
+.fullwidth {
+    width: 100%;
+}

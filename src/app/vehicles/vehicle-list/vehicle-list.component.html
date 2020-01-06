@@ -1,0 +1,87 @@
+<StackLayout>
+                <ScrollView height="100%" width="100%">
+    <WrapLayout>
+            <ns-header></ns-header>
+            <!-- <GridLayout class = "registration-search" width="100%" height=""   columns ="*" rows="50">
+                    <TextField [(ngModel)]="registration" (returnPress)="searchRegistration()" class = "registration-search-input" row = "0" col = "0" hint="Search Registration"></TextField>
+            </GridLayout> -->
+
+            <WrapLayout class ="accordion" width="100%" orientation="horizontal" *ngFor ="let vehicle of vehicles; let i = index" backgroundColor="">
+
+               <WrapLayout (tap)="toggleVisibility(collapsable, collapsableState)" class = "top-border">
+                        <Label class = "registration" width="35%" height="150px" [text]="vehicle.registration"></Label>
+                        <Label class = "manufacturer" width="55%" height="150px" [text]="vehicle.manufacturer+' '+vehicle.model"></Label>
+                        <Label class="fa indicator" width = "10%" text="&#xf111;" [color]="getOverallIndicatorColor(vehicle)"></Label>
+                </WrapLayout>
+                <Label #collapsableState [attr.state]="'inactive'" visibility = "collapsed" width = "0" height = "0"></Label>
+                <GridLayout #collapsable visibility="visible" [@state]="collapsableState.state" height="auto" rows="240, 80">
+                        <GridLayout row ="0" width="100%" height="auto"   columns ="*,*,*" rows="120, 120">
+                                <StackLayout row="0" col="0" class = "grid" (tap)="editTax(vehicle.id, vehicle.registration, vehicle.tax)">
+                                        <Label class ="fa small-indicator" text="&#xf111;" [color]="getIndicatorColor(vehicle.tax)"></Label>
+                                        <Label text="Tax" textWrap="true"></Label>
+                                        <Label text="{{vehicle.tax}}" textWrap="true"></Label>
+                                </StackLayout>
+
+                                <StackLayout row="0" col="1" class = "grid" (tap)="editNct(vehicle.id, vehicle.registration, vehicle.nct)">
+                                        <Label class ="fa small-indicator" text="&#xf111;" [color]="getIndicatorColor(vehicle.nct)"></Label>
+                                        <Label text="NCT" textWrap="true"></Label>
+                                        <Label text="{{vehicle.nct}}" textWrap="true"></Label>
+                                </StackLayout>
+
+                                <StackLayout row="0" col="2" class = "grid" (tap)="editInsurance(vehicle.id, vehicle.registration, vehicle.insurance)">
+                                        <Label class ="fa small-indicator" text="&#xf111;" [color]="getIndicatorColor(vehicle.insurance)"></Label>
+                                        <Label text="Insurance" textWrap="true"></Label>
+                                        <Label text="{{vehicle.insurance}}" textWrap="true"></Label>
+                                </StackLayout>
+
+                                <StackLayout row="1" col="0" class = "grid" (tap)="editService(vehicle.id, vehicle.registration, vehicle.service)">
+                                        <Label class ="fa small-indicator" text="&#xf111;" [color]="getIndicatorColor(vehicle.service)"></Label>
+                                        <Label text="Service" textWrap="true"></Label>
+                                        <Label text="{{vehicle.service}}" textWrap="true"></Label>
+                                </StackLayout>
+
+                                <StackLayout row="1" col="1" class = "grid" (tap)="editLicense(vehicle.id, vehicle.registration, vehicle.license)">
+                                        <Label class ="fa small-indicator" text="&#xf111;" [color]="getIndicatorColor(vehicle.license)"></Label>
+                                        <Label text="License" textWrap="true"></Label>
+                                        <Label text="{{vehicle.license}}" textWrap="true"></Label>
+                                </StackLayout>
+
+                                <StackLayout row="1" col="2" class = "grid" >
+                                        <Label class ="" text=""></Label>
+                                        <Label text="" textWrap="true"></Label>
+                                        <Label text="" textWrap="true"></Label>
+                                </StackLayout>
+                        </GridLayout>
+                        <GridLayout class = "actions" row = "1" height="auto" width="100%" columns = "10, *, 10, *, 10, *, 10, *, 10, *, 10" height = "90">
+                                <StackLayout row = "0" col ="1" (tap)= "deleteVehiclePrompt(vehicle.registration)" class = "accordion-action-button warn">
+                                        <Label text = "&#xf1f8;" class = "fa"></Label>
+                                        <Label text = "Delete Vehicle" textWrap="true" class = "action-button-text"></Label>
+                                </StackLayout>
+
+                                <StackLayout row = "0" col ="3" (tap)= "roadTax()" class = "accordion-action-button regular">
+                                        <Label text = "&#xf021;" class = "fa"></Label>
+                                        <Label text = "Renew Road tax" textWrap="true" class = "action-button-text"></Label>
+                                </StackLayout>
+
+                                <StackLayout row = "0" col ="5" (tap)= "bookNct()" class = "accordion-action-button regular">
+                                        <Label text = "&#xf02d;" class = "fa"></Label>
+                                        <Label text = "Book NCT" textWrap="true" class = "action-button-text"></Label>
+                                </StackLayout>
+
+                                <StackLayout row = "0" col ="7" (tap)= "insuranceQuote()" class = "accordion-action-button regular">
+                                        <Label text = "&#xf153;" class = "fa"></Label>
+                                        <Label text = "Insurance Quote" textWrap="true" class = "action-button-text"></Label>
+                                </StackLayout>
+
+                                <StackLayout row = "0" col ="9" (tap)= "shareApp()" class = "accordion-action-button accent">
+                                        <Label text = "&#xf1e0;" class = "fa"></Label>
+                                        <Label text = "Share App" textWrap="true" class = "action-button-text"></Label>
+                                </StackLayout>
+                        </GridLayout>
+                </GridLayout>
+            </WrapLayout>
+
+    </WrapLayout>
+</ScrollView>
+</StackLayout>
+<ns-sidebar></ns-sidebar>

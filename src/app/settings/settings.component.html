@@ -1,0 +1,50 @@
+<StackLayout>
+    <WrapLayout>
+        <ns-header [title] = "'Settings'"></ns-header>
+        <StackLayout>
+                <Label class = "settings-divider"></Label>
+            <!-- <Label class = "settings-header main" textAlignment="center" text="{{this.getEmail()}}"></Label> -->
+
+            <Label class = "settings-header" text = "MY ACCOUNT"></Label>
+            <WrapLayout class = "settings-item-group" orientation="horizontal" width="80%">
+
+                <Label class = "settings-item border" text="Change Password" width="80%"></Label>
+                <Label class = "settings-item fa border" text="&#xf054;" width="20%" (tap)="this.changePassword()"></Label>
+
+                <Label class = "settings-item" text="Delete Account" width="80%" color ="red"></Label>
+                <Label class = "settings-item fa" text="&#xf054;" width="20%" (tap)="this.deleteUser()"></Label>
+
+            </WrapLayout>
+            <Label class = "settings-divider"></Label>
+
+            <Label class = "settings-header main" text = "NOTIFICATIONS"></Label>
+            <WrapLayout class = "settings-item-group" orientation="horizontal" width="80%">
+
+                <Label class = "settings-item" text="Enabled" width="80%"></Label>
+                <Switch  class = "switch" #switch [checked] = "switchStatus" width="20%"  (tap)="this.toggleNotification(switch.checked)"></Switch>
+
+            </WrapLayout>
+            <Label class = "settings-divider"></Label>
+
+            <Label class = "settings-header main" text = "ABOUT"></Label>
+            <WrapLayout class = "settings-item-group" orientation="horizontal" width="80%">
+
+                <Label class = "settings-item border" text="Terms" width="80%"></Label>
+                <Label class = "settings-item fa border" text="&#xf054;" width="20%" (tap)="loadPage(this.termsPath)"></Label>
+
+                <Label class = "settings-item border" text="Privacy" width="80%"></Label>
+                <Label class = "settings-item fa border" text="&#xf054;" width="20%" (tap)="loadPage(this.privacyPath)"></Label>
+
+                <!-- <Label class = "settings-item border" text="About" width="80%"></Label>
+                <Label class = "settings-item fa border" text="&#xf054;" width="20%" (tap)="loadPage(this.aboutPath)"></Label> -->
+
+                <Label class = "settings-item" text="Contact" width="80%"></Label>
+                <Label class = "settings-item fa" text="&#xf054;" width="20%" (tap)="loadPage(this.contactPath)"></Label>
+            </WrapLayout>
+            <Label class = "settings-divider"></Label>
+
+
+        </StackLayout>
+    </WrapLayout>
+</StackLayout>
+<ns-sidebar></ns-sidebar>

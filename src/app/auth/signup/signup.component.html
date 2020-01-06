@@ -1,0 +1,40 @@
+
+<AbsoluteLayout width = "100%" height = "100%">
+    <ScrollView width = "100%" height = "100%">
+        <WrapLayout class = "body">
+            <ns-header></ns-header>
+            <StackLayout orientation="vertical" width="" height="" backgroundColor="#3099e9">
+
+
+                <Label class = "hr" width="100%" height="0"></Label>
+
+                <GridLayout  columns ="*" rows="70, 40, 50, 65, 65, 65, 65, 70, 50, 70" width = "80%" height= "100%">
+
+                    <Button     row = "0" text ="SIGN UP WITH FACEBOOK" class = "auth-button fullwidth auth-facebook"></Button>
+
+                    <Label      row = "1" text="or" class = "auth-text auth-or"></Label>
+
+                    <Label      row = "1" col = "0" class = "auth-hr" width="100%" height="2"></Label>
+
+                    <Label      row = "2" text="Sign up with your email address" class = "auth-text"></Label>
+
+                    <TextField  row = "3" col = "1" [(ngModel)]="email" hint = "Email" class = "auth-input" ></TextField>
+
+                    <TextField  row = "4" col = "1" hint = "Confirm email" class = "auth-input" ></TextField>
+
+                    <TextField  row = "5" col = "1" [(ngModel)]="password" hint = "Password" secure = "true" class = "auth-input"></TextField>
+
+                    <TextField  row = "6" col = "1" hint = "What should we call you"  (returnPress)="submit()" class = "auth-input"></TextField>
+
+                    <Button     row = "7" text ="SIGN UP" (tap)="submit()" class = "auth-button"></Button>
+
+                    <Label      row = "8" text="Already have an account?" class = "auth-text lower"></Label>
+
+                    <!-- <Label      row = "9" nsRouterLink="/auth/login" pageTransition="slide" text="Log in" class = "auth-text login lower"></Label> -->
+                    <Button     row = "9" nsRouterLink="/auth/login" pageTransition="slide" text ="LOG IN" class = "auth-button fullwidth auth-signup"></Button>
+                </GridLayout>
+            </StackLayout>
+        </WrapLayout>
+    </ScrollView>
+<ns-toast></ns-toast>
+</AbsoluteLayout>

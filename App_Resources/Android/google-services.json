@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "424686651251",
+    "firebase_url": "https://mean-vdr-ns.firebaseio.com",
+    "project_id": "mean-vdr-ns",
+    "storage_bucket": "mean-vdr-ns.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424686651251:android:a33d631d8fe1dc75d82706",
+        "android_client_info": {
+          "package_name": "org.nativescript.meanvdrns"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424686651251-bpr00h0rggq7u09494cb2bfjfnla5tvb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByDcW38N3xamvQ34oF_gXoBT728tmj2w8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424686651251-bpr00h0rggq7u09494cb2bfjfnla5tvb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

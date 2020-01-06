@@ -1,0 +1,98 @@
+.header {
+    width: 100%;
+
+    color: white;
+    font-size: 25px;
+
+}
+
+.logo-img{
+    height: 50;
+    margin-top: 13px;
+    margin-left: 15px;
+}
+
+.side-menu{
+
+    text-align: center;
+    margin-left:5px;
+    padding-top: 32px;
+    font-size: 27px;
+}
+
+.logo{
+    text-align: center;
+    margin-right: 150px;
+    padding-top: 15px;
+}
+
+.sidebar-container{
+    overflow:visible;
+}
+
+.registration-search-input {
+    background-color: rgba(30,30,30, .2);
+    color: white;
+    placeholder-color: rgba(255,255,255,.8);
+    border-bottom-width: 1px;
+    border-color: white;
+    margin-left: 200px;
+    margin-right: 200px;
+    font-size: 20px;
+    border-radius:15px;
+    text-align: center;
+    padding: -20;
+
+    border-bottom-color: rgba(0,0,0,0);
+    overflow: visible;
+
+    background-color: white;
+    placeholder-color: gray;
+    color: gray;
+    font-size: 15px;
+}
+
+.nav-upper{
+
+    /* border-bottom-left-radius:100px;
+    border-bottom-right-radius:30px; */
+    background-color: #3099e9;
+
+}
+
+.nav-lower {
+    background-color: rgba(255,255,255,1);
+    color: rgb(190,190,190);
+    border-bottom-width: 2px;
+    border-color: rgb(48, 153, 233);
+    border-color: rgb(200, 200, 200);
+    border-top-width: 1px;
+    border-color: rgb(200,200,200);
+}
+
+.tab-bar{
+    text-align: center;
+    vertical-align: center;
+
+}
+
+.divider-right {
+    border-right-width: 2px;
+    border-color: rgb(48, 153, 233);
+
+}
+
+.text{
+    font-size: 15px;
+}
+
+
+.active {
+    color: rgb(48, 153, 233);
+}
+
+.title{
+    padding-top: 41px;
+    padding-left: 15px;
+    font-size: 20px;
+}

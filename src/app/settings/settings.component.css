@@ -1,0 +1,57 @@
+.settings-item-group{
+    font-size: 17px;
+    color : rgb(30,30,30);
+    vertical-align: center;
+}
+
+.settings-item {
+    height: 40;
+    vertical-align: center;
+    padding-top: 8;
+}
+
+.settings-item.border{
+    border-bottom-width: 1px;
+    border-color: rgb(200,200,200);
+}
+
+.settings-item.fa{
+    text-align: right;
+    color : rgb(200,200,200);
+    color: rgb(48, 153, 233);
+    padding-top: 12;
+    font-size: 14px;
+}
+
+.switch{
+    height: 0;
+    padding: 0;
+    margin: 0;
+    text-align: right;
+
+}
+
+.settings-divider {
+    /* border-bottom-width: 15px; */
+    border-top-width: 5px;
+    border-color: rgb(200,200,200);
+    height:35px;
+    width: 100%;
+    background-color:rgb(230,230,230);
+    /* border-color:   rgb(200,200,200); */
+}
+
+.settings-header {
+    padding-top:30px;
+    font-size: 17px;
+    background-color:rgb(245,245,245);
+    width: 100%;
+    padding-left: 40%;
+    border-bottom-width: 1px;
+    border-color:   rgb(200,200,200);
+
+}
+
+.main {
+    margin-top:0px;
+}

@@ -1,0 +1,19 @@
+{
+  "name": "mean-vdr-ns",
+  "description": "NativeScript Application",
+  "license": "SEE LICENSE IN <your-license-filename>",
+  "repository": "<fill-your-repository-here>",
+  "dependencies": {
+    "express":"^4.16.3",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.7.7",
+    "mongoose-unique-validator": "^2.0.3",
+    "nodemon": "^1.19.4",
+    "reflect-metadata": "~0.1.12",
+    "firebase-admin": "^8.6.0",
+    "firebase-functions": "^3.3.0",
+    "node-cron": "^2.0.3"
+  }
+}
