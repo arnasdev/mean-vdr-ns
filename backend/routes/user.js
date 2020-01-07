@@ -11,6 +11,8 @@ router.post("/login", UserController.userLogin);
 
 router.post("/logout", UserController.userLogout);
 
+router.post("/fb-login", UserController.facebookLogin);
+
 router.delete("/:id", checkAuth, UserController.deleteUser);
 
 router.put("/:id", checkAuth, UserController.editUser);

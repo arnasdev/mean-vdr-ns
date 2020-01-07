@@ -25,9 +25,10 @@ import { NotificationService } from "../notification/notification.service";
 import { RouterExtensions } from "nativescript-angular/router";
 import { TnsOAuthClient, ITnsOAuthTokenResult } from "nativescript-oauth2";
 import { response } from "express";
+import { access } from "fs";
 
-const BACKEND_URL = 'http://vdrapi-env.d5xyfzxdwi.eu-west-1.elasticbeanstalk.com/api/user/';
-// const BACKEND_URL = 'http://192.168.137.2:3000/api/user/';
+// const BACKEND_URL = 'http://vdrapi-env.d5xyfzxdwi.eu-west-1.elasticbeanstalk.com/api/user/';
+const BACKEND_URL = 'http://192.168.137.2:3000/api/user/';
 let headers = new HttpHeaders(
 {
     'Content-Type': 'application/x-www-form-urlencoded'
@@ -41,6 +42,7 @@ export class AuthService {
     private email: string;
 
     private isAuthenticated = false;
+    private socialLogin = false;
     private client: TnsOAuthClient = null;
     private authStatusListener = new Subject<boolean>();
 
@@ -137,7 +139,6 @@ export class AuthService {
   }
 
   autoAuthUser() {
-
     const authInformation = this.getAuthData();
     if (!authInformation) {
       return;
@@ -162,6 +163,8 @@ export class AuthService {
         console.log("Error removing deviceToken");
     });
 
+    this.tnsOauthLogout();
+
     console.log("logged out");
     this.token = null;
     this.isAuthenticated = false;
@@ -173,44 +176,59 @@ export class AuthService {
     this.routerExtensions.navigate(['/auth/login'], {clearHistory: true});
   }
 
-  tnsOauthLogin(providerType) {
-      console.log("logging in");
+  getOauthToken(providerType) {
+    let accessToken;
     this.client = new TnsOAuthClient(providerType);
-    console.log(providerType);
+    this.client.loginWithCompletion(
+        (tokenResult: ITnsOAuthTokenResult, error) => {
+            if(error){
+                console.log(error);
+            } else {
+                accessToken = tokenResult.accessToken;
+                console.log(tokenResult);
+                this.oAuthLogin(accessToken);
+            }
+        }
+    )
+  }
 
-    // return new Promise<ITnsOAuthTokenResult>((resolve, reject) => {
-        this.client.loginWithCompletion(
-            (tokenResult: ITnsOAuthTokenResult, error) => {
+  oAuthLogin(accessToken){
+    const deviceToken = this.notificationService.getToken();
+    const authData = { accessToken, deviceToken };
+
+    this.http.post<{token: string, userId: string, email: string}>(BACKEND_URL + 'fb-login', authData)
+        .subscribe(response => {
+            const token = response.token;
+            this.token = token;
+            if (token) {
+                this.email = response.email;
+                this.isAuthenticated = true;
+                this.userId = response.userId;
+                this.authStatusListener.next(true);
+                this.saveAuthData(token, this.userId, response.email);
+                this.routerExtensions.navigate(['/'], {clearHistory: true});
+            }
+        }, error => {
+            this.authStatusListener.next(false);
+            this.routerExtensions.navigate(['/auth/login'], { queryParams: {message: "Error logging in", toastType: "error" },clearHistory: true});
+        });
+  }
+
+  tnsOauthLogout() {
+    if(this.client){
+        this.client.logoutWithCompletion(
+            (error) => {
                 if(error){
-                    console.log(error);
-                } else {
-                    console.log(tokenResult);
+                    console.log("oauth log out failed: "+error);
+
+                } else{
+                    console.log("oauth client logged out");
                 }
             }
         );
-    //});
-  }
-
-  tnsOauthLogout(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-        if(this.client){
-            this.client.logoutWithCompletion(
-                (error) => {
-                    if(error){
-                        console.log("back to main page with error");
-                        console.log(error);
-                        reject(error);
-                    } else{
-                        console.log("back to main page with success");
-                        resolve();
-                    }
-                }
-            );
-        } else {
-            console.log("back to main page with success");
-            resolve();
-        }
-    });
+    } else {
+        console.log("oauth client logged out");
+    }
   }
 
   private saveAuthData(token: string, userId: string, email: string) {

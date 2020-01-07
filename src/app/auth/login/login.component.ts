@@ -32,6 +32,6 @@ export class LoginComponent {
     }
 
     fbOauthLogin(){
-        this.authService.tnsOauthLogin("facebook");
+        this.authService.getOauthToken("facebook");
     }
 }

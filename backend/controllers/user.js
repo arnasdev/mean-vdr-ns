@@ -1,5 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const https = require('https');
+
 
 const User = require("../models/user");
 const Device = require("../models/device");
@@ -8,21 +10,37 @@ const Vehicle = require("../models/vehicle");
 exports.createUser = (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
+
+      let socialUser = false;
+
+      if(req.socialLogin){
+        socialUser = true;
+      }
+
       const user = new User({
         email: req.body.email,
-        password: hash
+        password: hash,
+        socialUser: socialUser
       });
       user.save()
         .then(result => {
-
           this.createDeviceTokens(user, req.body.deviceToken);
 
-          res.status(201).json({
-            message: "User created!",
-            result: result
-          });
+          console.log(socialUser);
+
+          if(socialUser){
+            this.userLogin(req, res, next);
+          }
+          else{
+            res.status(201).json({
+              message: "User created!",
+              result: result
+            });
+          }
+
         })
         .catch(err => {
+          console.log(err);
           if(err.errors.email.properties.type === "unique"){
             res.status(500).json({
                 message: "Email address is already taken"
@@ -86,6 +104,48 @@ exports.userLogout = (req, res, next) => {
   this.deleteDeviceToken(userId, deviceToken, req, res, next);
 }
 
+exports.facebookLogin = (req, res, next) => {
+  let accessToken = req.body.accessToken;
+  let deviceToken = req.body.deviceToken;
+  req.socialLogin = true;
+
+  https.get("https://graph.facebook.com/me?fields=id,name,email&access_token="+accessToken, (resp) => {
+    let data = '';
+
+    // A chunk of data has been recieved.
+    resp.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+      let jsonData = JSON.parse(data);
+      let email = jsonData.email;
+
+      req.body.email = email;
+
+      User.findOne({email: email}).then(user => {
+        if(user){
+          req.comparePassword = false;
+          if(user.socialUser === false){
+            res.status(400).json({message:"Error logging in"});
+          } else{
+            this.userLogin(req, res, next);
+          }
+        }
+        else{
+          req.body.password = "";
+          this.createUser(req, res, next);
+        }
+      })
+    });
+  }).on("error", (err) => {
+    console.log("Error: " + err.message);
+  });
+
+
+}
+
 exports.deleteDeviceToken = (userId, token, req, res, next) => {
   Device.findOne({owner: userId})
     .then(device => {
@@ -134,6 +194,9 @@ exports.createDeviceTokens = (user, token) => {
 exports.tryAppendDeviceToken = (user, token) => {
   Device.findOne({ owner: user._id })
     .then(device => {
+      if(!device){
+        return;
+      }
       if(device.deviceTokens.includes(token)){
         console.log("deviceToken already registered");
       }
@@ -150,11 +213,17 @@ exports.tryAppendDeviceToken = (user, token) => {
       }
     })
     .catch(error => {
-      console.log("Error retriving deviceTokens for user");
+      console.log("Error retriving deviceTokens for user: "+error);
     })
 }
 
 exports.userLogin = (req, res, next) => {
+  comparePassword = req.comparePassword
+
+  if(comparePassword === undefined){
+    comparePassword = true;
+  }
+
   let fetchedUser;
   User.findOne({ email: req.body.email })
     .then(user => {
@@ -163,8 +232,18 @@ exports.userLogin = (req, res, next) => {
           message: "Auth failed"
         })
       }
+      if(!req.socialLogin && user.socialUser){
+        return res.status(401).json({
+          message: "Auth failed"
+        })
+      }
       fetchedUser = user;
-      return bcrypt.compare(req.body.password, user.password);
+      if(comparePassword){
+        return bcrypt.compare(req.body.password, user.password);
+      }
+      else{
+        return true;
+      }
     })
     .then(result => {
       if(!result){
@@ -179,7 +258,8 @@ exports.userLogin = (req, res, next) => {
       this.tryAppendDeviceToken(fetchedUser, req.body.deviceToken);
       res.status(200).json({
         token: token,
-        userId: fetchedUser._id
+        userId: fetchedUser._id,
+        email: fetchedUser.email
       });
     })
     .catch(err => {
