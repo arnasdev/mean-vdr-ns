@@ -20,7 +20,8 @@ exports.createUser = (req, res, next) => {
       const user = new User({
         email: req.body.email,
         password: hash,
-        socialUser: socialUser
+        socialUser: socialUser,
+        fbLinked: false
       });
       user.save()
         .then(result => {
@@ -104,11 +105,9 @@ exports.userLogout = (req, res, next) => {
   this.deleteDeviceToken(userId, deviceToken, req, res, next);
 }
 
-exports.facebookLogin = (req, res, next) => {
+exports.facebookDetails = (req, res, next) => {
   let accessToken = req.body.accessToken;
-  let deviceToken = req.body.deviceToken;
-  req.socialLogin = true;
-
+  console.log(accessToken);
   https.get("https://graph.facebook.com/me?fields=id,name,email&access_token="+accessToken, (resp) => {
     let data = '';
 
@@ -117,33 +116,133 @@ exports.facebookLogin = (req, res, next) => {
       data += chunk;
     });
 
-    // The whole response has been received. Print out the result.
     resp.on('end', () => {
       let jsonData = JSON.parse(data);
-      let email = jsonData.email;
-
-      req.body.email = email;
-
-      User.findOne({email: email}).then(user => {
+      let facebookEmail = jsonData.email;
+      console.log(jsonData);
+      User.findOne({email: facebookEmail}).then(user => {
         if(user){
-          req.comparePassword = false;
-          if(user.socialUser === false){
-            res.status(400).json({message:"Error logging in"});
-          } else{
-            this.userLogin(req, res, next);
+          if(!user.fbLinked){
+            user.fbLinked = false;
           }
+          res.status(200).json({
+            facebookEmail: facebookEmail,
+            emailExists: true,
+            fbLinked: user.fbLinked,
+            socialUser: user.socialUser
+          });
+        } else {
+          res.status(200).json({
+            facebookEmail: facebookEmail,
+            emailExists: false,
+            fbLinked: false,
+            socialUser: false
+          });
+        }
+      });
+    });
+  });
+}
+
+exports.facebookLink = (req, res, next) => {
+  let email = req.body.email;
+  let facebookEmail = req.body.facebookEmail;
+  console.log(facebookEmail);
+  let fetchedUser;
+  let duplicateError = false;
+
+  User.findOne({email: email}).then(user => {
+    if(!user){
+      console.log("res 400");
+      res.status(400).json({message:"Error linking facebook account"});
+    }
+    fetchedUser = user;
+  }).then(() => {
+    fetchedUser.socialUser = false;
+    fetchedUser.fbLinked = true;
+    if(facebookEmail){
+      // Check if facebookEmail already exists
+      User.findOne({email: facebookEmail}).then(duplicateUser => {
+        if(duplicateUser){
+          duplicateError = true;
         }
         else{
-          req.body.password = "";
-          this.createUser(req, res, next);
+          fetchedUser.email = facebookEmail;
         }
+      }).then(() => {
+        if(duplicateError){
+          res.status(400).json({
+            message:"Account exists for both emails"
+          });
+          return;
+        }
+        User.updateOne({_id: fetchedUser._id}, fetchedUser).then(result => {
+          res.status(200).json({
+            message:"Updated user with facebook link"
+          })
+        }).catch( err => {
+          res.status(400).json({
+            message:"Error updating user with facebook link"
+          })
+        });
+      });
+    }
+  }).catch(err => {
+    res.status(400).json({
+      message: "Error updating user"
+    });
+  })
+}
+
+exports.facebookUnlink = (req, res, next) => {
+  let email = req.body.email;
+  let fetchedUser;
+
+  console.log("unlink email"+email);
+
+  User.findOne({email: email}).then(user => {
+    if(!user){
+      res.status(400).json({message:"Error unlinking facebook account"});
+    }
+    fetchedUser = user;
+  }).then(() => {
+    fetchedUser.socialUser = false;
+    fetchedUser.fbLinked = false;
+    User.updateOne({_id: fetchedUser._id}, fetchedUser).then(result => {
+      res.status(200).json({
+        message:"Updated user with unlinked facebook"
+      })
+    }).catch( err => {
+      res.status(400).json({
+        message:"Error updating user with unlinked facebook"
       })
     });
-  }).on("error", (err) => {
-    console.log("Error: " + err.message);
+  })
+
+}
+
+exports.facebookLogin = (req, res, next) => {
+  let accessToken = req.body.accessToken;
+  let deviceToken = req.body.deviceToken;
+  let email = req.body.email;
+  req.socialLogin = true;
+
+  User.findOne({email: email}).then(user => {
+    if(user){
+      req.comparePassword = false;
+
+      if(user.socialUser === false && user.fbLinked === false){
+        res.status(400).json({message:"Error logging in"});
+      } else{
+        this.userLogin(req, res, next);
+      }
+    }
+    else{
+      console.log("creating social user");
+      req.body.password = "";
+      this.createUser(req, res, next);
+    }
   });
-
-
 }
 
 exports.deleteDeviceToken = (userId, token, req, res, next) => {
@@ -259,7 +358,9 @@ exports.userLogin = (req, res, next) => {
       res.status(200).json({
         token: token,
         userId: fetchedUser._id,
-        email: fetchedUser.email
+        email: fetchedUser.email,
+        fbLinked: fetchedUser.fbLinked,
+        socialUser: fetchedUser.socialUser
       });
     })
     .catch(err => {

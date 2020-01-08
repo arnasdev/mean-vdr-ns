@@ -24,6 +24,7 @@ export class SettingsComponent implements OnInit, OnDestroy{
     contactPath = '/contact';
     privacyPath = '/privacy';
     aboutPath = '/about';
+    fbLinkPath = "/auth/fb-link";
 
 
     constructor(private authService: AuthService, private notificationService: NotificationService, private router: Router) {}
@@ -48,48 +49,25 @@ export class SettingsComponent implements OnInit, OnDestroy{
         });
     }
 
+    getFbLinked(){
+        return this.authService.getFbLinked();
+    }
+
+    getSocialUser(){
+        return this.authService.getSocialUser();
+    }
+
     ngOnDestroy() {
         this.authSubscription.unsubscribe();
         this.notificationSubscription.unsubscribe();
     }
-
 
     getEmail(){
         return this.authService.getEmail();
     }
 
     changePassword(){
-
         this.router.navigate(["password-reset"]);
-        // let options: PromptOptions = {
-        //     title: "Change Password Form",
-        //     defaultText: "Enter your existing password",
-        //     message: "",
-        //     okButtonText: "OK",
-        //     cancelButtonText: "Cancel",
-        //     cancelable: true,
-        //     inputType: inputType.text, // email, number, text, password, or email
-        //     capitalizationType: capitalizationType.sentences // all. none, sentences or words
-        // };
-
-        // let oldPassword;
-        // let newPassword;
-        // let newPasswordConfirm;
-
-        // prompt(options).then((result: PromptResult) => {
-        //     oldPassword = result.text;
-        //     options.defaultText = "Enter your new password";
-
-        //     prompt(options).then((result: PromptResult) => {
-        //         newPassword = result.text;
-        //         options.defaultText = "Re-enter your new password";
-
-        //         prompt(options).then((result: PromptResult) => {
-        //             newPasswordConfirm = result.text;
-
-        //         });
-        //     });
-        // });
     }
 
 
@@ -120,6 +98,29 @@ export class SettingsComponent implements OnInit, OnDestroy{
         }
 
         this.notificationService.editNotification(status);
+    }
+
+    setPassword(){
+
+    }
+
+    linkFacebook(){
+        this.authService.linkFacebook();
+    }
+
+    unlinkFacebook(){
+        let options = {
+            title: "Are you sure you want to unlink Facebook?",
+            message: "Your Facebook will be unlinked and you'll have to sign in using your password! Your account will NOT be deleted.",
+            okButtonText: "Yes",
+            cancelButtonText: "No",
+        };
+
+        confirm(options).then(result => {
+            if(result){
+                this.authService.unlinkFacebook();
+            }
+        });
     }
 
     loadPage(path: string){

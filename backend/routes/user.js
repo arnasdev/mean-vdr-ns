@@ -13,6 +13,12 @@ router.post("/logout", UserController.userLogout);
 
 router.post("/fb-login", UserController.facebookLogin);
 
+router.post("/fb-userdata", UserController.facebookDetails);
+
+router.post("/fb-link", UserController.facebookLink);
+
+router.post("/fb-unlink", UserController.facebookUnlink);
+
 router.delete("/:id", checkAuth, UserController.deleteUser);
 
 router.put("/:id", checkAuth, UserController.editUser);

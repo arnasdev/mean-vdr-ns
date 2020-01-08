@@ -9,11 +9,13 @@ import { HttpClientModule } from "@angular/common/http";
 import { HeaderModule } from "../header/header.module";
 import { ToastComponent } from "../toast/toast.component";
 import { ToastModule } from "../toast/toast.module";
+import { FacebookLinkComponent } from "./fb-link/fb-link.component";
 
 @NgModule({
     declarations: [
         LoginComponent,
-        SignupComponent
+        SignupComponent,
+        FacebookLinkComponent
     ],
     imports: [
         NativeScriptHttpClientModule,

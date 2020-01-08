@@ -31,6 +31,11 @@
 
 }
 
+.settings-item.email{
+    background-color: rgb(245,245,245);
+    color: rgb(48, 153, 233);
+}
+
 .settings-divider {
     /* border-bottom-width: 15px; */
     border-top-width: 5px;

@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { AuthService } from "../auth.service";
 import { RouterExtensions } from "nativescript-angular/router";
-import { ITnsOAuthTokenResult } from "nativescript-oauth2";
 import { Page } from "tns-core-modules/ui/page";
 
 @Component({
@@ -13,9 +12,7 @@ export class LoginComponent {
     email: string = '';
     password: string = '';
 
-    constructor(private page: Page, public authService: AuthService, private routerExtensions: RouterExtensions) {
-        page.actionBarHidden = true;
-    }
+    constructor(public authService: AuthService, private routerExtensions: RouterExtensions) {}
 
     submit() {
         if(this.password === ""){

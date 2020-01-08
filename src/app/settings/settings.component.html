@@ -3,13 +3,28 @@
         <ns-header [title] = "'Settings'"></ns-header>
         <StackLayout>
                 <Label class = "settings-divider"></Label>
-            <!-- <Label class = "settings-header main" textAlignment="center" text="{{this.getEmail()}}"></Label> -->
+            <Label class = "settings-item email border" textAlignment="center" text="Logged in as {{this.getEmail()}}"></Label>
 
             <Label class = "settings-header" text = "MY ACCOUNT"></Label>
             <WrapLayout class = "settings-item-group" orientation="horizontal" width="80%">
 
                 <Label class = "settings-item border" text="Change Password" width="80%"></Label>
                 <Label class = "settings-item fa border" text="&#xf054;" width="20%" (tap)="this.changePassword()"></Label>
+
+                <WrapLayout *ngIf="this.getSocialUser() === false && this.getFbLinked() === false">
+                    <Label class = "settings-item border" text="Link Facebook" width="80%" color =""></Label>
+                    <Label class = "settings-item fa border" text="&#xf054;" width="20%" (tap)="this.linkFacebook()"></Label>
+                </WrapLayout>
+
+                <WrapLayout *ngIf="this.getSocialUser() === true && this.getFbLinked() === false">
+                    <Label class = "settings-item border" text="Set Password" width="80%" color =""></Label>
+                    <Label class = "settings-item fa border" text="&#xf054;" width="20%" (tap)="this.setPassword()"></Label>
+                </WrapLayout>
+
+                <WrapLayout *ngIf="this.getSocialUser() === false && this.getFbLinked() === true">
+                    <Label class = "settings-item border" text="Unlink Facebook" width="80%" color =""></Label>
+                    <Label class = "settings-item fa border" text="&#xf054;" width="20%" (tap)="this.unlinkFacebook()"></Label>
+                </WrapLayout>
 
                 <Label class = "settings-item" text="Delete Account" width="80%" color ="red"></Label>
                 <Label class = "settings-item fa" text="&#xf054;" width="20%" (tap)="this.deleteUser()"></Label>
