@@ -1,13 +1,19 @@
 <AbsoluteLayout width = "100%" height = "100%">
     <ScrollView  width = "100%" height = "100%">
-        <WrapLayout class = "body">
+        <StackLayout  class = "body">
+        <WrapLayout>
             <ns-header></ns-header>
             <StackLayout orientation="vertical" width="" height="" backgroundColor="#3099e9" >
                 <Label class="h1 center logo" text="vdr"></Label>
 
                 <!-- <Label class = "hr" width="100%" height="1"></Label> -->
 
-                <GridLayout  columns ="*" rows="70, 40, 50, 65, 65, 70, 50, 50, 70" width = "80%" height= "100%">
+                <StackLayout width = "80%" height= "100%">
+
+                    <!-- <WrapLayout>
+                        <Image  class = "logo-img" src="~/img/vdr-icon-trans.png" width = "" ></Image>
+                        <Label text="Vehicle Reminders"></Label>
+                    </WrapLayout> -->
 
                     <Button     row = "0" text ="LOG IN WITH FACEBOOK" (tap) =  "fbOauthLogin()" class = "auth-button fullwidth auth-facebook"></Button>
 
@@ -21,20 +27,21 @@
 
                     <TextField  row = "4" [(ngModel)]="password" (returnPress)="submit()" hint = "Password" secure="true" class = "auth-input"></TextField>
 
-                    <Button     row = "5" (tap)="submit()" text ="LOGIN" class = "auth-button"></Button>
+                    <Button  row = "5" (tap)="submit()" text ="LOGIN" class = "auth-button small"></Button>
 
                     <Label      row = "6" class = "auth-hr" width="100%" height="2"></Label>
 
                     <Label      row = "7" text="Don't have an account?" class = "auth-text"></Label>
 
                     <Button     row = "8" nsRouterLink="/auth/signup" pageTransition="slide" text ="SIGN UP" class = "auth-button fullwidth auth-signup"></Button>
-                </GridLayout>
+                </StackLayout>
             <!--
                 <Label text="Label 2" width="100%" height="" backgroundColor="green"></Label>
                 <Label text="Label 3" width="100%" height="" backgroundColor="blue"></Label>
                 <Label text="Label 4" width="100%" height="" backgroundColor="yellow"></Label> -->
             </StackLayout>
         </WrapLayout>
+    </StackLayout>
     </ScrollView>
 <ns-toast></ns-toast>
 </AbsoluteLayout>

@@ -115,12 +115,13 @@ export class AuthService {
                 this.isAuthenticated = true;
                 this.userId = response.userId;
                 this.authStatusListener.next(true);
+                this.fbLinked = true;
+                this.socialUser = false;
                 this.saveAuthData(token, this.userId, this.email, this.fbLinked, this.socialUser);
                 this.routerExtensions.navigate(['/vehicles'], {queryParams: {message: "Password changed", toastType: "success" }, clearHistory: true});
             }
         }, error => {
             this.routerExtensions.navigate(['/password-reset'], {queryParams: {message: "Error, please re-fill the form", toastType: "error" }, clearHistory: true});
-
         });
   }
 

@@ -8,8 +8,10 @@
             <Label class = "settings-header" text = "MY ACCOUNT"></Label>
             <WrapLayout class = "settings-item-group" orientation="horizontal" width="80%">
 
-                <Label class = "settings-item border" text="Change Password" width="80%"></Label>
-                <Label class = "settings-item fa border" text="&#xf054;" width="20%" (tap)="this.changePassword()"></Label>
+                <WrapLayout *ngIf="this.getSocialUser() === false">
+                    <Label class = "settings-item border" text="Change Password" width="80%"></Label>
+                    <Label class = "settings-item fa border" text="&#xf054;" width="20%" (tap)="this.changePassword()"></Label>
+                </WrapLayout>
 
                 <WrapLayout *ngIf="this.getSocialUser() === false && this.getFbLinked() === false">
                     <Label class = "settings-item border" text="Link Facebook" width="80%" color =""></Label>

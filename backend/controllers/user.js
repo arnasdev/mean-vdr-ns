@@ -69,6 +69,10 @@ exports.editUser = (req, res, next) => {
 
           if(authenticated) {
 
+            if(user.fbLinked === false && user.socialUser === true){
+              user.fbLinked = true;
+              user.socialUser = false;
+            }
 
             bcrypt.hash(req.body.newPassword, 10).then(hash => {
                 user.password = hash;

@@ -101,7 +101,7 @@ export class SettingsComponent implements OnInit, OnDestroy{
     }
 
     setPassword(){
-
+        this.router.navigate(["set-password"]);
     }
 
     linkFacebook(){

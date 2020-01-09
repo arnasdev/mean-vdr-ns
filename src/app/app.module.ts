@@ -28,6 +28,7 @@ import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
 import { TermsComponent } from "./terms/terms.component";
 import { ContactComponent } from "./contact/contact.component";
 import { PasswordResetComponent } from "./password-reset/password-reset.component";
+import { SetPasswordComponent } from "./set-password/set-password.component";
 
 @NgModule({
     declarations: [
@@ -38,6 +39,7 @@ import { PasswordResetComponent } from "./password-reset/password-reset.componen
         SidebarComponent,
         ContactComponent,
         PasswordResetComponent,
+        SetPasswordComponent,
         TermsComponent,
         AboutComponent,
         FocusDirective,
