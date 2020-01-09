@@ -29,4 +29,8 @@ export class SignupComponent {
 
     }
 
+    fbOauthLogin(){
+        this.authService.getOauthToken("facebook");
+    }
+
 }

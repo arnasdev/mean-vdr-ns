@@ -39,8 +39,14 @@ export class DatePickerDialog implements AfterViewInit {
     }
 
     public close(result: string) {
-        let datePickerView = <DatePicker>this.datePicker.nativeElement;
-        this.params.closeCallback(datePickerView.date);
+        if(result === "Cancel"){
+            let datePickerView = <DatePicker>this.datePicker.nativeElement;
+            this.params.closeCallback(this.currentDate);
+        }
+        else{
+            let datePickerView = <DatePicker>this.datePicker.nativeElement;
+            this.params.closeCallback(datePickerView.date);
+        }
     }
 
 }

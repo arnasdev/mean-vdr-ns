@@ -10,11 +10,13 @@ import { HeaderModule } from "../header/header.module";
 import { ToastComponent } from "../toast/toast.component";
 import { ToastModule } from "../toast/toast.module";
 import { FacebookLinkComponent } from "./fb-link/fb-link.component";
+import { AuthIndexComponent } from "./index/index.component";
 
 @NgModule({
     declarations: [
         LoginComponent,
         SignupComponent,
+        AuthIndexComponent,
         FacebookLinkComponent
     ],
     imports: [

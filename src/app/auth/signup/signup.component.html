@@ -1,16 +1,17 @@
 
-<AbsoluteLayout width = "100%" height = "100%">
+<AbsoluteLayout width = "100%" height = "100%"  class = "body">
+    <Image src="~/img/vdr-index.jpg" class="index-img" height="110%"></Image>
     <ScrollView width = "100%" height = "100%">
-        <WrapLayout class = "body">
+        <WrapLayout>
             <ns-header></ns-header>
-            <StackLayout orientation="vertical" width="" height="" backgroundColor="#3099e9">
+            <StackLayout orientation="vertical" width="" height="">
 
 
                 <Label class = "hr" width="100%" height="0"></Label>
 
-                <GridLayout  columns ="*" rows="70, 40, 50, 65, 65, 65, 65, 70, 50, 70" width = "80%" height= "100%">
+                <GridLayout  columns ="*" rows="70, 40, 50, 65, 0, 65, 65, 70, 50, 70" width = "80%" height= "100%">
 
-                    <Button     row = "0" text ="LOG IN WITH FACEBOOK" class = "auth-button fullwidth auth-facebook"></Button>
+                    <Button     row = "0" text ="LOG IN WITH FACEBOOK" (tap) =  "fbOauthLogin()"  class = "auth-button fullwidth auth-facebook"></Button>
 
                     <Label      row = "1" text="or" class = "auth-text auth-or"></Label>
 

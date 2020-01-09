@@ -97,7 +97,8 @@ export class VehicleListComponent implements OnInit, OnDestroy {
 
         let options: ModalDialogOptions = {
             viewContainerRef: this.viewContainerRef,
-            context: {currentDate, promptMsg: "Select a date"}
+            context: {currentDate, promptMsg: "Select a date"},
+
         };
 
         return this.modalService.showModal(DatePickerDialog, options);
@@ -121,6 +122,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
 
     editTax(id: string, registration: string, taxDate: string) {
         this.showDatePicker(taxDate).then(result => {
+
             let date = new Date(result);
             this.vehiclesService.editVehicle(id, registration, { tax: date });
         });
