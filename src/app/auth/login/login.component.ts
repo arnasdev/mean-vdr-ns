@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
-import { AuthService } from "../auth.service";
 import { RouterExtensions } from "nativescript-angular/router";
-import { Page } from "tns-core-modules/ui/page";
+
+import { AuthService } from "../auth.service";
 
 @Component({
     selector: "ns-login",

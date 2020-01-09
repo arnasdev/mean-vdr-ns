@@ -1,24 +1,21 @@
 import { Component, OnInit } from "@angular/core";
-import { AuthService } from "../auth/auth.service";
-import { Route, ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { RouterExtensions } from "nativescript-angular/router";
+
+import { AuthService } from "../auth/auth.service"
 
 @Component({
     selector: "ns-password-reset",
     templateUrl: "./password-reset.component.html",
     styleUrls: ["./password-reset.component.css"]
 })
-export class PasswordResetComponent implements OnInit {
+export class PasswordResetComponent {
     oldPassword: string = '';
     newPassword: string = '';
     confirmNewPassword: string = "";
     message: string = "";
 
     constructor(private authService: AuthService, private activatedRoute: ActivatedRoute, private routerExtensions: RouterExtensions) {}
-
-    ngOnInit() {
-
-    }
 
     submit() {
         if(this.newPassword === this.confirmNewPassword){
@@ -28,7 +25,6 @@ export class PasswordResetComponent implements OnInit {
             else{
                 this.authService.changePassword(this.oldPassword, this.newPassword);
             }
-
         }
         else{
             this.routerExtensions.navigate(['/password-reset'], { queryParams: {message: "New passwords don't match", toastType: "error" },clearHistory: true});

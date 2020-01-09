@@ -1,11 +1,7 @@
-import { Component, OnInit, ElementRef, ViewChild } from "@angular/core";
+import { Component, ElementRef, ViewChild } from "@angular/core";
 import { ModalDialogParams } from "nativescript-angular/modal-dialog";
-
 import { DatePicker } from "tns-core-modules/ui/date-picker";
 import { Page } from "tns-core-modules/ui/page";
-import { View } from "tns-core-modules/ui/core/view";
-import { Label } from "tns-core-modules/ui/label";
-import { DialogOptions } from "tns-core-modules/ui/dialogs";
 import { AfterViewInit} from '@angular/core';
 
 @Component({
@@ -48,5 +44,4 @@ export class DatePickerDialog implements AfterViewInit {
             this.params.closeCallback(datePickerView.date);
         }
     }
-
 }

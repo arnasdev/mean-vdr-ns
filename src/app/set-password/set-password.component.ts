@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
-import { AuthService } from "../auth/auth.service";
-import { Route, ActivatedRoute } from "@angular/router";
+import { Component } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { RouterExtensions } from "nativescript-angular/router";
+
+import { AuthService } from "../auth/auth.service";
 
 @Component({
     selector: "ns-set-password",
@@ -23,7 +24,6 @@ export class SetPasswordComponent {
             else {
                 this.authService.changePassword("", this.newPassword);
             }
-
         }
         else{
             this.routerExtensions.navigate(['/set-password'], { queryParams: {message: "New passwords don't match", toastType: "error" },clearHistory: true});

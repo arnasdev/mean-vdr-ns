@@ -1,16 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { alert, confirm } from "tns-core-modules/ui/dialogs";
+import { RouterExtensions } from 'nativescript-angular/router';
 
 import { Vehicle } from './vehicle.model';
-import {
-    alert,
-    confirm
-} from "tns-core-modules/ui/dialogs";
-import { RouterExtensions } from 'nativescript-angular/router';
 
 
 
@@ -20,56 +17,55 @@ const BACKEND_URL = 'http://vdrapi-env.d5xyfzxdwi.eu-west-1.elasticbeanstalk.com
 @Injectable({providedIn: 'root'})
 export class VehiclesService {
 
-  private vehicles: Vehicle[] = [];
+  constructor(private http: HttpClient, private router: Router, private datePipe: DatePipe, private routerExtensions: RouterExtensions) {}
 
+  private vehicles: Vehicle[] = [];
   private vehiclesUpdated = new Subject<{vehicles: Vehicle[]}>();
 
-  constructor(private http: HttpClient, private router: Router, private datePipe: DatePipe, private routerExtensions: RouterExtensions) { }
-
-  getVehicles() {
-    this.http
-      .get<{message: string, vehicles: any}>(BACKEND_URL)
-      .pipe(map(vehicleData => {
-        return {
-          vehicles: vehicleData.vehicles.map(vehicle => {
+    getVehicles() {
+        this.http
+        .get<{message: string, vehicles: any}>(BACKEND_URL)
+        .pipe(map(vehicleData => {
             return {
-              id: vehicle._id,
-              registration: vehicle.registration,
-              manufacturer: vehicle.manufacturer,
-              model: vehicle.model,
-              tax: vehicle.tax,
-              nct: vehicle.nct,
-              insurance: vehicle.insurance,
-              service: vehicle.service,
-              license: vehicle.license,
-              cpc: vehicle.cpc
+            vehicles: vehicleData.vehicles.map(vehicle => {
+                return {
+                id: vehicle._id,
+                registration: vehicle.registration,
+                manufacturer: vehicle.manufacturer,
+                model: vehicle.model,
+                tax: vehicle.tax,
+                nct: vehicle.nct,
+                insurance: vehicle.insurance,
+                service: vehicle.service,
+                license: vehicle.license,
+                cpc: vehicle.cpc
+                };
+            }),
             };
-          }),
+        })
+        )
+        .subscribe((mappedVehicleData) => {
+        this.vehicles = mappedVehicleData.vehicles;
+        this.sendVehiclesUpdated();
+        });
+    }
+
+    getVehicleUpdateListener() {
+        return this.vehiclesUpdated.asObservable();
+    }
+
+    addVehicle(registration: string, manufacturer: string, model: string) {
+        const postData = {
+            registration,
+            manufacturer,
+            model,
+            tax: 'N/A',
+            nct: 'N/A',
+            insurance: 'N/A',
+            service: 'N/A',
+            license: 'N/A',
+            cpc: 'N/A'
         };
-      })
-    )
-    .subscribe((mappedVehicleData) => {
-      this.vehicles = mappedVehicleData.vehicles;
-      this.sendVehiclesUpdated();
-    });
-  }
-
-  getVehicleUpdateListener() {
-    return this.vehiclesUpdated.asObservable();
-  }
-
-  addVehicle(registration: string, manufacturer: string, model: string) {
-    const postData = {
-      registration,
-      manufacturer,
-      model,
-      tax: 'N/A',
-      nct: 'N/A',
-      insurance: 'N/A',
-      service: 'N/A',
-      license: 'N/A',
-      cpc: 'N/A'
-    };
 
     this.http
       .post<{message: string, vehicle: Vehicle}>(BACKEND_URL, postData)
@@ -78,7 +74,7 @@ export class VehiclesService {
           this.sendVehiclesUpdated();
           this.routerExtensions.navigate(['/vehicles'], { queryParams: {message: "Vehicle added", toastType: "success" },clearHistory: true});
       });
-  }
+    }
 
   editVehicle(id: string, registration: string, vehicleData: {
     nct?: Date,
@@ -88,6 +84,7 @@ export class VehiclesService {
     license?: Date,
     cpc?: Date
     }) {
+
     const editingVehicle: Vehicle = this.vehicles[this.vehicles.findIndex(v => v.registration === registration)];
     const dateFormat = 'd MMM yy';
 
@@ -124,9 +121,6 @@ export class VehiclesService {
   }
 
   searchRegistration(registration: string) {
-
-    // this.toastrService.info('Searching for registration...');
-
     this.http
       .get<{data: string}>(BACKEND_URL + 'search/' + registration)
       .subscribe(data => {
@@ -170,50 +164,37 @@ export class VehiclesService {
             });
         }
     });
-
   }
 
-  promptDeleteVehicle(registration: string){
-    let options = {
-        title: "Delete vehicle",
-        message: "Delete this vehicle?",
-        okButtonText: "Yes",
-        cancelButtonText: "No",
-    };
+    promptDeleteVehicle(registration: string){
+        let options = {
+            title: "Delete vehicle",
+            message: "Delete this vehicle?",
+            okButtonText: "Yes",
+            cancelButtonText: "No",
+        };
+        confirm(options).then(result => {
+            if(result){
+                this.deleteVehicle(registration);
+            }
+        });
+    }
 
-    confirm(options).then(result => {
-        if(result){
-            this.deleteVehicle(registration);
-        }
-  });
+
+    deleteVehicle(registration: string) {
+        const deleteIndex = this.vehicles.findIndex(o => o.registration === registration);
+        const id = this.vehicles[deleteIndex].id;
+
+        this.http.delete(BACKEND_URL + id ).subscribe((result) => {
+            this.vehicles.splice(deleteIndex, 1);
+            this.sendVehiclesUpdated();
+            this.routerExtensions.navigate(['/vehicles'], { queryParams: {message: "Vehicle deleted", toastType: "success" },clearHistory: true});
+        });
+    }
+
+    sendVehiclesUpdated() {
+        this.vehiclesUpdated.next({
+        vehicles: [...this.vehicles]
+        });
+    }
 }
-
-
-deleteVehicle(registration: string) {
-    const deleteIndex = this.vehicles.findIndex(o => o.registration === registration);
-    const id = this.vehicles[deleteIndex].id;
-
-    // alert(deleteIndex).then(() => {
-        // alert(id).then(() => {
-            this.http.delete(BACKEND_URL + id ).subscribe((result) => {
-                // alert(result);
-                this.vehicles.splice(deleteIndex, 1);
-                this.sendVehiclesUpdated();
-                this.routerExtensions.navigate(['/vehicles'], { queryParams: {message: "Vehicle deleted", toastType: "success" },clearHistory: true});
-            });
-        //});
-   // });
-
-}
-
-
-  sendVehiclesUpdated() {
-    this.vehiclesUpdated.next({
-      vehicles: [...this.vehicles]
-    });
-  }
-}
-
-//   findVehicleImageURL(manufacturer: string) {
-
-//   }

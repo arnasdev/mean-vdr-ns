@@ -20,8 +20,6 @@ export class NotificationService {
     private notificationsEnabled: boolean;
     private notificationsListener = new Subject<boolean>();
 
-
-
     getNotificationsListener(){
         return this.notificationsListener;
     }
@@ -37,7 +35,6 @@ export class NotificationService {
     registerNotifications() {
         messaging.registerForPushNotifications({
             onPushTokenReceivedCallback: (token: string): void => {
-                // this.saveDeviceToken(token);
                 this.deviceToken = token;
                 console.log("Firebase plugin received a push token: " + token);
             },
@@ -50,8 +47,7 @@ export class NotificationService {
                         message: message.body,
                         okButtonText: "OK"
                     };
-                    alert(options).then(() => {
-                    });
+                    alert(options).then(() => {});
                 }
             },
 
@@ -63,30 +59,14 @@ export class NotificationService {
         })
         .then(() => {
             console.log("Firebase Initialized");
-        }
-
-        )
+        })
         .catch(error => {
             console.log("Firebase Initialization Error "+ error);
         });
     }
 
-    private saveDeviceToken(token: string) {
-        setString('deviceToken', token);
 
-      }
-
-      private clearDeviceToken() {
-        remove('deviceToken');
-
-      }
-
-      private getDeviceToken() {
-        const token = getString('deviceToken');
-        return token;
-      }
-
-      editNotification(notification: boolean) {
+    editNotification(notification: boolean) {
         let string = "enabled";
 
         let data = {
@@ -97,9 +77,8 @@ export class NotificationService {
             string = "disabled";
         }
 
-        console.log("sending put");
-
         this.getNotification();
+
         if(notification === this.notificationsEnabled){
             return;
         }
@@ -107,10 +86,9 @@ export class NotificationService {
         this.http.put(BACKEND_URL, data).subscribe((result) => {
             this.notificationsEnabled = notification;
             this.notificationsListener.next(this.notificationsEnabled);
-
             this.routerExtensions.navigate(['/settings'], {queryParams: {message: "Notifications "+string, toastType: "info" }, clearHistory: true});
         });
-      }
+    }
 
     getNotification() {
         this.http.get<{message: string, notification: boolean}>(BACKEND_URL).subscribe((result) => {

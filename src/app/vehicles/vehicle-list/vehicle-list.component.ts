@@ -1,23 +1,15 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-
 import { trigger, state, transition, animate, style } from "@angular/animations";
-import { Subscription, of } from 'rxjs';
-import { Vehicle } from "../vehicle.model";
-import { VehiclesService } from "../vehicles.service";
-import { AuthService } from "~/app/auth/auth.service";
-import { Router, NavigationEnd } from "@angular/router";
+import { Subscription } from 'rxjs';
 import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/modal-dialog";
 import { ViewContainerRef } from "@angular/core";
-import { DatePickerDialog } from "../datepicker-dialog/datepicker-dialog";
-import { Observable } from "tns-core-modules/ui/page/page";
-import { NotificationService } from "~/app/notification/notification.service";
 import * as SocialShare from "nativescript-social-share";
 import * as utils from "tns-core-modules/utils/utils"
 
-import {
-    confirm
-} from "tns-core-modules/ui/dialogs";
-import { RouterExtensions } from "nativescript-angular/router";
+import { Vehicle } from "../vehicle.model";
+import { VehiclesService } from "../vehicles.service";
+import { AuthService } from "~/app/auth/auth.service";
+import { DatePickerDialog } from "../datepicker-dialog/datepicker-dialog";
 
 enum indicatorStatus {
     Okay = 'green',
@@ -42,19 +34,19 @@ enum indicatorStatus {
 })
 export class VehicleListComponent implements OnInit, OnDestroy {
 
-    constructor(private vehiclesService: VehiclesService, private authService: AuthService, private notificationService: NotificationService, private modalService: ModalDialogService, private viewContainerRef: ViewContainerRef, private routerExtensions: RouterExtensions){}
+    constructor(private vehiclesService: VehiclesService, private authService: AuthService, private modalService: ModalDialogService, private viewContainerRef: ViewContainerRef){}
 
+    public vehicles: Vehicle[];
     visibility = 'collapsed';
     allowMultiple = false;
     current: any;
-
     isAuthenticated = false;
     vehicleSubscription: Subscription;
     authSubscription: Subscription;
 
-
     ngOnInit() {
         this.isAuthenticated = this.authService.getIsAuth();
+
         if (this.isAuthenticated) {
           this.vehiclesService.getVehicles();
         }
@@ -69,19 +61,15 @@ export class VehicleListComponent implements OnInit, OnDestroy {
           .getAuthStatusListener()
           .subscribe(authStatus => {
             this.isAuthenticated = authStatus;
-          });
+        });
     }
-
-
 
     ngOnDestroy() {
         this.vehicleSubscription.unsubscribe();
         this.authSubscription.unsubscribe();
     }
 
-    public vehicles: Vehicle[];
-
-    toggleVisibility(collapsable, state)
+    toggleVisibility(state)
     {
         this.changeState(state);
     }
@@ -113,7 +101,6 @@ export class VehicleListComponent implements OnInit, OnDestroy {
 				this.current.state = 'inactive';
 			}
 		}
-
         let state = obj.state;
         state = state === 'active' ? 'inactive' : 'active';
         obj.state = state;
@@ -122,51 +109,49 @@ export class VehicleListComponent implements OnInit, OnDestroy {
 
     editTax(id: string, registration: string, taxDate: string) {
         this.showDatePicker(taxDate).then(result => {
-
             let date = new Date(result);
             this.vehiclesService.editVehicle(id, registration, { tax: date });
         });
       }
 
     editNct(id: string, registration: string, nctDate: string) {
-    this.showDatePicker(nctDate).then(result => {
-        let date = new Date(result);
-        this.vehiclesService.editVehicle(id, registration, { nct: date });
-    });
+        this.showDatePicker(nctDate).then(result => {
+            let date = new Date(result);
+            this.vehiclesService.editVehicle(id, registration, { nct: date });
+        });
     }
 
     editInsurance(id: string, registration: string, insuranceDate: string) {
-    this.showDatePicker(insuranceDate).then(result => {
-        let date = new Date(result);
-        this.vehiclesService.editVehicle(id, registration, { insurance: date });
-    });
+        this.showDatePicker(insuranceDate).then(result => {
+            let date = new Date(result);
+            this.vehiclesService.editVehicle(id, registration, { insurance: date });
+        });
     }
 
     editService(id: string, registration: string, serviceDate: string) {
-    this.showDatePicker(serviceDate).then(result => {
-        let date = new Date(result);
-        this.vehiclesService.editVehicle(id, registration, { service: date });
-    });
+        this.showDatePicker(serviceDate).then(result => {
+            let date = new Date(result);
+            this.vehiclesService.editVehicle(id, registration, { service: date });
+        });
     }
 
     editLicense(id: string, registration: string, licenseDate: string) {
-    this.showDatePicker(licenseDate).then(result => {
-        let date = new Date(result);
-        this.vehiclesService.editVehicle(id, registration, { license: date });
-    });
+        this.showDatePicker(licenseDate).then(result => {
+            let date = new Date(result);
+            this.vehiclesService.editVehicle(id, registration, { license: date });
+        });
     }
 
     editCpc(id: string, registration: string, cpcDate: string) {
-    this.showDatePicker(cpcDate).then(result => {
-        let date = new Date(result);
-        this.vehiclesService.editVehicle(id, registration, { cpc: date });
-    });
+        this.showDatePicker(cpcDate).then(result => {
+            let date = new Date(result);
+            this.vehiclesService.editVehicle(id, registration, { cpc: date });
+        });
     }
 
     deleteVehicle(registration: string){
         this.vehiclesService.deleteVehicle(registration);
     }
-
 
     shareApp() {
         SocialShare.shareUrl("www.google.ie", "Check out the Vehicle Reminders app!", "Vehicle Reminders");
@@ -199,7 +184,6 @@ export class VehicleListComponent implements OnInit, OnDestroy {
         const date = new Date(dateString);
         const now = Date.now();
 
-
         if (date.getTime() > now) {
             status = indicatorStatus.Okay;
         } else {
@@ -215,7 +199,6 @@ export class VehicleListComponent implements OnInit, OnDestroy {
         const insuranceColor = this.getIndicatorColor(vehicle.insurance);
         const serviceColor = this.getIndicatorColor(vehicle.service);
         const licenseColor = this.getIndicatorColor(vehicle.license);
-        //const cpcColor = this.getIndicatorColor(vehicle.cpc);
 
         if (taxColor === 'red' || nctColor === 'red' || insuranceColor === 'red' ||serviceColor === 'red' || licenseColor === 'red') {
             return 'red';

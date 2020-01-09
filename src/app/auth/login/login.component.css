@@ -1,8 +1,4 @@
 .logo {
-    /* height:120px;
-    background-color:rgb(30,30,30);
-
-    color:white; */
     height: 0px;
     width: 100%;
 }
@@ -12,14 +8,6 @@
 }
 
 .index-img {
-    /* display: inline-block;
-    background-image:url("~/img/vdr-index.jpg");
-    background-size: 100%;
-    width: 100%;
-    background-repeat: no-repeat;
-    background-clip: unset;
-    background-position: left top; */
-
     opacity: .4;
 }
 
@@ -81,8 +69,6 @@
     font-weight: 600;
     background-color: white;
     color: #3099e9;
-
-
 }
 
 .auth-facebook {
@@ -101,7 +87,6 @@
 
 .auth-hr {
     background-color: white;
-
 }
 
 .fullwidth {

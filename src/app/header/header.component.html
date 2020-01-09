@@ -1,20 +1,18 @@
 <AbsoluteLayout>
     <StackLayout *ngIf="!this.router.url.startsWith('/auth')" class ="header"  orientation="vertical">
-        <!-- <Label width="100%" height="30" class="nav-upper" text="VDR" textAlignment="center"></Label> -->
+
         <GridLayout *ngIf="this.router.url.includes('vehicles')" columns = "*" class = "nav-upper" height="60">
             <WrapLayout>
                 <Image  class = "logo-img" src="~/img/vdr-icon-trans.png" width = "" ></Image>
             </WrapLayout>
-
-            <!-- <Label (tap)="toggleSideBar()" row = "0" col = "0" class = "fa side-menu" text="&#xf0c9;" ></Label> -->
-            <!-- <Label row = "0" col = "1" class = "logo" text="vdr"  height="50"></Label> -->
-            <TextField   (tap)="closeSideBar()" row = "0" col = "0" [lineHeight]="1" height="35" [(ngModel)]="registration" (returnPress)="searchRegistration()" class = "registration-search-input fa" hint="  &#xf002; Search Registration   "></TextField>
-            <!-- <Label *ngIf="this.router.url !== '/'" text="{{title}}" row = "0" col = "0" height = "37" textAlignment="center"></Label> -->
+            <TextField row = "0" col = "0" [lineHeight]="1" height="35" [(ngModel)]="registration" (returnPress)="searchRegistration()" class = "registration-search-input fa" hint="  &#xf002; Search Registration   "></TextField>
         </GridLayout>
+
         <WrapLayout *ngIf="!this.router.url.includes('/vehicles')" height ="60" class = "nav-upper">
             <Image  class = "logo-img"  src="~/img/vdr-icon-trans.png" width = "" ></Image>
             <Label text="{{title}}" class = "title"></Label>
         </WrapLayout>
+
         <GridLayout height = "55" class = "nav-lower" columns="*,*,*" orientation="horizontal">
             <StackLayout col="0" class = "tab-bar divider-right {{isActive(this.vehiclePath)}}" (tap)="loadPage(this.vehiclePath)">
                     <Label text="&#xf1b9;" class = "fa"></Label>
@@ -31,6 +29,7 @@
                     <Label text="Logout" class = "text"></Label>
             </StackLayout>
         </GridLayout>
+
     </StackLayout>
     <ns-toast  *ngIf="!this.router.url.startsWith('/auth')" ></ns-toast>
 </AbsoluteLayout>

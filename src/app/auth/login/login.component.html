@@ -2,47 +2,41 @@
     <Image src="~/img/vdr-index.jpg" class="index-img" height="110%"></Image>
     <ScrollView  width = "100%" height = "100%" >
         <StackLayout>
-        <WrapLayout>
-            <ns-header></ns-header>
-            <StackLayout orientation="vertical" width="" height="">
-                <Label class="h1 center logo" text="vdr"></Label>
+            <WrapLayout>
+                <ns-header></ns-header>
+                <StackLayout orientation="vertical" width="" height="">
+                    <Label class="h1 center logo" text="vdr"></Label>
 
-                <!-- <Label class = "hr" width="100%" height="1"></Label> -->
+                    <StackLayout width = "80%" height= "100%">
 
-                <StackLayout width = "80%" height= "100%">
+                        <StackLayout orientation="horizontal" horizontalAlignment="center" class = "header">
+                            <Image  class = "logo-img" src="~/img/vdr-icon-trans.png" width = "" ></Image>
+                            <Label text="Vehicle Reminders" class = "logo-text"></Label>
+                        </StackLayout>
 
-                    <StackLayout orientation="horizontal" horizontalAlignment="center" class = "header">
-                        <Image  class = "logo-img" src="~/img/vdr-icon-trans.png" width = "" ></Image>
-                        <Label text="Vehicle Reminders" class = "logo-text"></Label>
+                        <Button     row = "0" text ="LOG IN WITH FACEBOOK" (tap) =  "fbOauthLogin()" class = "auth-button fullwidth auth-facebook"></Button>
+
+                        <Label      row = "1" text="or" class = "auth-text auth-or"></Label>
+
+                        <Label      row = "1" col = "0" class = "" width="100%" height="2"></Label>
+
+                        <Label      row = "2" text="Log in with your email address" class = "auth-text"></Label>
+
+                        <TextField  row = "3" [(ngModel)]="email" hint = "Email" class = "auth-input" ></TextField>
+
+                        <TextField  row = "4" [(ngModel)]="password" (returnPress)="submit()" hint = "Password" secure="true" class = "auth-input"></TextField>
+
+                        <Button  row = "5" (tap)="submit()" text ="LOGIN" class = "auth-button small"></Button>
+
+                        <Label      row = "6" class = "auth-hr" width="100%" height="2"></Label>
+
+                        <Label      row = "7" text="Don't have an account?" class = "auth-text"></Label>
+
+                        <Button     row = "8" nsRouterLink="/auth/signup" pageTransition="slide" text ="SIGN UP" class = "auth-button fullwidth auth-signup"></Button>
                     </StackLayout>
-
-                    <Button     row = "0" text ="LOG IN WITH FACEBOOK" (tap) =  "fbOauthLogin()" class = "auth-button fullwidth auth-facebook"></Button>
-
-                    <Label      row = "1" text="or" class = "auth-text auth-or"></Label>
-
-                    <Label      row = "1" col = "0" class = "" width="100%" height="2"></Label>
-
-                    <Label      row = "2" text="Log in with your email address" class = "auth-text"></Label>
-
-                    <TextField  row = "3" [(ngModel)]="email" hint = "Email" class = "auth-input" ></TextField>
-
-                    <TextField  row = "4" [(ngModel)]="password" (returnPress)="submit()" hint = "Password" secure="true" class = "auth-input"></TextField>
-
-                    <Button  row = "5" (tap)="submit()" text ="LOGIN" class = "auth-button small"></Button>
-
-                    <Label      row = "6" class = "auth-hr" width="100%" height="2"></Label>
-
-                    <Label      row = "7" text="Don't have an account?" class = "auth-text"></Label>
-
-                    <Button     row = "8" nsRouterLink="/auth/signup" pageTransition="slide" text ="SIGN UP" class = "auth-button fullwidth auth-signup"></Button>
                 </StackLayout>
-            <!--
-                <Label text="Label 2" width="100%" height="" backgroundColor="green"></Label>
-                <Label text="Label 3" width="100%" height="" backgroundColor="blue"></Label>
-                <Label text="Label 4" width="100%" height="" backgroundColor="yellow"></Label> -->
-            </StackLayout>
-        </WrapLayout>
-    </StackLayout>
+            </WrapLayout>
+        </StackLayout>
     </ScrollView>
 <ns-toast></ns-toast>
 </AbsoluteLayout>

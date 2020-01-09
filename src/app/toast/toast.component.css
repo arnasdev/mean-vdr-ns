@@ -1,35 +1,24 @@
 .toast{
-    /* width: 250; */
     height: 70;
-
     color: white;
     text-align:left;
     padding-left:20;
     padding-right: 20;
     vertical-align: center;
     font-size: 15px;
-    /* box-shadow: 1px 1px 3 20 black; */
-
     border-radius:10px;
-    /* background: #3099e9; */
-
 }
 
 .title {
     font-weight: 700;
 }
 
-
 .border{
-    /* width: 250; */
     height: 70;
-
     border-radius:20px;
     border-width: 5px;
     border-top-width: 5px;
     border-right-width: 5px;
-
     background-color:rgba(0,0,0,.1);
     border-color: rgba(0,0,0,.1);
-
 }

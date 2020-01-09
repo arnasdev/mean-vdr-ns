@@ -3,7 +3,6 @@ import { NativeScriptRouterModule } from "nativescript-angular/router";
 import { Routes } from "@angular/router";
 import { VehicleListComponent } from "./vehicles/vehicle-list/vehicle-list.component";
 import { AuthGuard } from './auth/auth.guard';
-import { AppComponent } from "./app.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { PrivacyComponent } from "./privacy/privacy.component";
 import { AboutComponent } from "./about/about.component";

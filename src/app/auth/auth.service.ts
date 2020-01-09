@@ -1,38 +1,17 @@
 import { Subject } from "rxjs";
-import { Injectable, DebugElement } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { request } from 'http';
-
-import { environment } from "~/environments/environment";
-import { confirm, alert, prompt, PromptOptions, inputType, capitalizationType, PromptResult } from "tns-core-modules/ui/dialogs";
-import { AuthData } from './auth-data.model';
-import { NsHttpBackEnd } from "nativescript-angular/http-client";
-import { HttpService } from "../http.service";
-
-import {
-    getBoolean,
-    setBoolean,
-    getNumber,
-    setNumber,
-    getString,
-    setString,
-    hasKey,
-    remove,
-    clear
-} from "tns-core-modules/application-settings";
-import { NotificationService } from "../notification/notification.service";
+import { HttpClient } from "@angular/common/http";
+import { confirm } from "tns-core-modules/ui/dialogs";
+import { getBoolean, setBoolean, getString, setString, remove} from "tns-core-modules/application-settings";
 import { RouterExtensions } from "nativescript-angular/router";
 import { TnsOAuthClient, ITnsOAuthTokenResult } from "nativescript-oauth2";
-import { response } from "express";
-import { access } from "fs";
+
+import { AuthData } from './auth-data.model';
+import { NotificationService } from "../notification/notification.service";
 
 //const BACKEND_URL = 'http://vdrapi-env.d5xyfzxdwi.eu-west-1.elasticbeanstalk.com/api/user/';
 const BACKEND_URL = 'http://192.168.137.2:3000/api/user/';
-let headers = new HttpHeaders(
-{
-    'Content-Type': 'application/x-www-form-urlencoded'
-});
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -47,7 +26,6 @@ export class AuthService {
     private authStatusListener = new Subject<boolean>();
 
     constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService, private routerExtensions: RouterExtensions){}
-
 
   getToken() {
     return this.token;
@@ -83,7 +61,7 @@ export class AuthService {
     this.http
     .post(BACKEND_URL + 'signup', authData)
     .subscribe(() => {
-      this.router.navigate(['/']);
+        this.router.navigate(['/']);
     }, error => {
         console.log(error);
         this.routerExtensions.navigate(['/auth/signup'], { queryParams: {message: error.error.message, toastType: "error" },clearHistory: true});
@@ -93,14 +71,14 @@ export class AuthService {
 
   deleteUser(){
     this.http.delete(BACKEND_URL + this.userId)
-    .subscribe((result) => {
+    .subscribe(() => {
         console.log("logged out");
         this.isAuthenticated = false;
         this.email = "";
         this.userId = "";
         this.routerExtensions.navigate(['/auth/login'], { queryParams: {message: "Account data removed", toastType: "info" },clearHistory: true});
         this.authStatusListener.next(false);
-    })
+    });
   }
 
   changePassword(currentPassword: string, newPassword: string) {
@@ -108,7 +86,6 @@ export class AuthService {
 
     this.http.put<{token: string, userId: string}>(BACKEND_URL + this.userId, data)
         .subscribe(response => {
-            console.log(response);
             const token = response.token;
             this.token = token;
             if (token) {
@@ -120,7 +97,7 @@ export class AuthService {
                 this.saveAuthData(token, this.userId, this.email, this.fbLinked, this.socialUser);
                 this.routerExtensions.navigate(['/vehicles'], {queryParams: {message: "Password changed", toastType: "success" }, clearHistory: true});
             }
-        }, error => {
+        }, () => {
             this.routerExtensions.navigate(['/password-reset'], {queryParams: {message: "Error, please re-fill the form", toastType: "error" }, clearHistory: true});
         });
   }
@@ -143,7 +120,7 @@ export class AuthService {
                 this.saveAuthData(token, this.userId, email, this.fbLinked, this.socialUser);
                 this.routerExtensions.navigate(['/'], {clearHistory: true});
             }
-        }, error => {
+        }, () => {
             this.authStatusListener.next(false);
             this.routerExtensions.navigate(['/auth/login'], { queryParams: {message: "Error logging in", toastType: "error" },clearHistory: true});
         });
@@ -154,7 +131,6 @@ export class AuthService {
     if (!authInformation) {
       return;
     }
-
     this.token = authInformation.token;
     this.isAuthenticated = true;
     this.userId = authInformation.userId;
@@ -170,15 +146,14 @@ export class AuthService {
     const logoutData = { userId, deviceToken };
 
     this.http.post(BACKEND_URL + 'logout', logoutData)
-    .subscribe(response => {
-        console.log("Removed deviceToken");
-    }, error => {
-        console.log("Error removing deviceToken");
-    });
+        .subscribe(() => {
+            console.log("Removed deviceToken");
+        }, () => {
+            console.log("Error removing deviceToken");
+        });
 
     this.tnsOauthLogout();
 
-    console.log("logged out");
     this.token = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
@@ -201,7 +176,7 @@ export class AuthService {
                 this.oAuthSocialLogin(accessToken);
             }
         }
-    )
+    );
   }
 
   getOauthUserDetails(accessToken){
@@ -221,10 +196,6 @@ export class AuthService {
                 console.log("Logging in user with social only account");
                 this.oAuthLogin(accessToken, response.facebookEmail);
             }
-            // else if(response.emailExists){
-            //     // link fb account to user account
-            //     this.routerExtensions.navigate(['/auth/fb-link'], {clearHistory: true});
-            // }
             else{
                 console.log("Creating social only account for user");
                 this.oAuthLogin(accessToken, response.facebookEmail);
@@ -249,7 +220,7 @@ export class AuthService {
                     facebookEmail = response.facebookEmail;
                     if(response.facebookEmail === this.email){
                         // VDR & Facebook use same email, connect accounts
-                        this.http.post(BACKEND_URL + 'fb-link', data).subscribe(response => {
+                        this.http.post(BACKEND_URL + 'fb-link', data).subscribe(() => {
                             this.fbLinked = true;
                             this.socialUser = false;
                             this.saveAuthData(this.getToken(), this.userId, email, this.fbLinked, this.socialUser);
@@ -269,7 +240,7 @@ export class AuthService {
                             if(result){
                                 let data = { email: email, facebookEmail: facebookEmail };
                                 console.log(data);
-                                this.http.post(BACKEND_URL + 'fb-link', data).subscribe(response => {
+                                this.http.post(BACKEND_URL + 'fb-link', data).subscribe(() => {
                                     this.fbLinked = true;
                                     this.socialUser = false;
                                     this.email = facebookEmail;
@@ -282,19 +253,19 @@ export class AuthService {
                             }
                         });
                     }
-                }), error => {
+                }), () => {
                     this.routerExtensions.navigate(['/'], { queryParams: {message: "Error linking Facebook", toastType: "error" },clearHistory: true});
                 };
             }
         }
-    )
+    );
   }
 
   unlinkFacebook(){
     let email = this.email;
     let data = { email };
 
-    this.http.post(BACKEND_URL + 'fb-unlink', data).subscribe(response => {
+    this.http.post(BACKEND_URL + 'fb-unlink', data).subscribe(() => {
         this.fbLinked = false;
         this.socialUser = false;
         this.saveAuthData(this.getToken(), this.userId, email, this.fbLinked, this.socialUser);
@@ -305,8 +276,6 @@ export class AuthService {
   oAuthLogin(accessToken, email){
     const deviceToken = this.notificationService.getToken();
     const authData = { email, accessToken, deviceToken };
-
-    console.log("authData"+authData.email);
 
     this.http.post<{token: string, userId: string, email: string, socialUser: boolean, fbLinked: boolean}>(BACKEND_URL + 'fb-login', authData)
         .subscribe(response => {
@@ -322,7 +291,7 @@ export class AuthService {
                 this.saveAuthData(token, this.userId, response.email, response.fbLinked, response.socialUser);
                 this.routerExtensions.navigate(['/'], {clearHistory: true});
             }
-        }, error => {
+        }, () => {
             this.authStatusListener.next(false);
             this.routerExtensions.navigate(['/auth/login'], { queryParams: {message: "Error logging in", toastType: "error" },clearHistory: true});
         });

@@ -33,13 +33,6 @@ export class ToastComponent implements OnInit, OnDestroy {
 
     constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
 
-    // ngOnInit() {
-    //     this.refreshSubscription = this.router.events.subscribe(event => {
-    //         this.pageRefreshEvent();
-    //     })
-
-    // }
-
     ngOnInit(){
         this.paramSubscription = this.activatedRoute.queryParams.subscribe(params => {
             if(params["message"] !== undefined && params["message"] !== ""){
@@ -82,13 +75,6 @@ export class ToastComponent implements OnInit, OnDestroy {
     hideToast(){
         this.toastState = false;
         this.toastStateString = "inactive";
-
-
-
-        // setTimeout(() => {
-        //     this.clearToastData();
-        // }, 200);
-
     }
 
     clearToastData(){

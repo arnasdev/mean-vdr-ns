@@ -3,16 +3,13 @@
     color: rgb(50,50,50);
     border-bottom-width: 1px;
     border-color: rgb(200,200,200);
-
     border-top-width:15px;
     border-top-color: rgb(245,245,245);
-
 }
 
 .registration-search {
     border-bottom-width: 0px;
     border-color:rgb(200,200,200);
-
 }
 
 .top-border{
@@ -76,7 +73,6 @@
     padding-top: 10;
     border-radius:10;
     border-width: 1;
-    /* border-color: rgb(30,30,30); */
 }
 
 .actions {
@@ -90,13 +86,11 @@
 
 .warn {
     background-color: rgb(200,60,60);
-    /* background-color: rgb(30,30,30); */
     color: white;
 }
 
 .accent {
     background-color: rgb(109, 62, 197);
-    /* background-color: rgb(30,30,30); */
     color: white;
 }
 

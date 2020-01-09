@@ -18,8 +18,4 @@ import { ToastComponent } from "../toast/toast.component";
         NO_ERRORS_SCHEMA
     ]
   })
-  export class ToastModule {
-
-
-
-  }
+  export class ToastModule {}

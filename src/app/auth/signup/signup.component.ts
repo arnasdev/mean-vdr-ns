@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
-import { AuthService } from "../auth.service";
 import { RouterExtensions } from "nativescript-angular/router";
+
+import { AuthService } from "../auth.service";
 
 @Component({
     selector: "ns-signup",
@@ -26,11 +27,9 @@ export class SignupComponent {
         if(this.email !== "" && this.password !== ""){
             this.authService.createUser(this.email, this.password);
         }
-
     }
 
     fbOauthLogin(){
         this.authService.getOauthToken("facebook");
     }
-
 }

@@ -2,9 +2,6 @@
         <ScrollView height="100%" width="100%">
         <WrapLayout>
             <ns-header></ns-header>
-            <!-- <GridLayout class = "registration-search" width="100%" height=""   columns ="*" rows="50">
-                    <TextField [(ngModel)]="registration" (returnPress)="searchRegistration()" class = "registration-search-input" row = "0" col = "0" hint="Search Registration"></TextField>
-            </GridLayout> -->
 
             <WrapLayout class ="accordion" width="100%" orientation="horizontal" *ngFor ="let vehicle of vehicles; let i = index" backgroundColor="">
 
@@ -13,6 +10,7 @@
                         <Label class = "manufacturer" width="55%" height="150px" [text]="vehicle.manufacturer+' '+vehicle.model"></Label>
                         <Label class="fa indicator" width = "10%" text="&#xf111;" [color]="getOverallIndicatorColor(vehicle)"></Label>
                 </WrapLayout>
+
                 <Label #collapsableState [attr.state]="'inactive'" visibility = "collapsed" width = "0" height = "0"></Label>
                 <GridLayout #collapsable visibility="visible" [@state]="collapsableState.state" height="auto" rows="240, 80">
                         <GridLayout row ="0" width="100%" height="auto"   columns ="*,*,*" rows="120, 120">
@@ -79,8 +77,8 @@
                                 </StackLayout>
                         </GridLayout>
                 </GridLayout>
-            </WrapLayout>
 
+            </WrapLayout>
         </WrapLayout>
         </ScrollView>
 </StackLayout>

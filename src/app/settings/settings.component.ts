@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
-import { AuthService } from "../auth/auth.service";
-import { confirm, alert, prompt, PromptOptions, inputType, capitalizationType, PromptResult } from "tns-core-modules/ui/dialogs";
-import { NotificationService } from "../notification/notification.service";
+import { confirm } from "tns-core-modules/ui/dialogs";
 import { Router } from "@angular/router";
 
+import { NotificationService } from "../notification/notification.service";
+import { AuthService } from "../auth/auth.service";
 
 @Component({
     selector: "ns-settings",
@@ -12,12 +12,9 @@ import { Router } from "@angular/router";
     styleUrls: ["./settings.component.css"]
 })
 export class SettingsComponent implements OnInit, OnDestroy{
-
     authSubscription: Subscription;
     notificationSubscription: Subscription;
-
     isAuthenticated;
-
     switchStatus: boolean = true;
 
     termsPath = '/terms';
@@ -25,7 +22,6 @@ export class SettingsComponent implements OnInit, OnDestroy{
     privacyPath = '/privacy';
     aboutPath = '/about';
     fbLinkPath = "/auth/fb-link";
-
 
     constructor(private authService: AuthService, private notificationService: NotificationService, private router: Router) {}
 
@@ -70,7 +66,6 @@ export class SettingsComponent implements OnInit, OnDestroy{
         this.router.navigate(["password-reset"]);
     }
 
-
     deleteUser(){
         let options = {
             title: "Really delete your account?",
@@ -78,7 +73,6 @@ export class SettingsComponent implements OnInit, OnDestroy{
             okButtonText: "Yes",
             cancelButtonText: "No",
         };
-
         confirm(options).then(result => {
             if(result){
                 this.authService.deleteUser();
@@ -92,11 +86,9 @@ export class SettingsComponent implements OnInit, OnDestroy{
 
     toggleNotification(status){
         status = !status;
-
         if(status === this.notificationService.getNotificationsEnabled()){
             return;
         }
-
         this.notificationService.editNotification(status);
     }
 
@@ -115,7 +107,6 @@ export class SettingsComponent implements OnInit, OnDestroy{
             okButtonText: "Yes",
             cancelButtonText: "No",
         };
-
         confirm(options).then(result => {
             if(result){
                 this.authService.unlinkFacebook();

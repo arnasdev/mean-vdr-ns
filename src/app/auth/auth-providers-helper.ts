@@ -1,8 +1,5 @@
 import {
-    TnsOAuthClient,
-    configureTnsOAuth,
-    ITnsOAuthTokenResult
-} from "nativescript-oauth2";
+    configureTnsOAuth} from "nativescript-oauth2";
 import {
     TnsOaProvider,
     TnsOaProviderOptionsFacebook,
@@ -16,11 +13,7 @@ import {
 } from "nativescript-oauth2/providers";
 
 export function configureOAuthProviders() {
-    // const microsoftProvider = configureOAuthProviderMicrosoft();
-    const googleProvider = configureOAuthProviderGoogle();
     const facebookProvider = configureOAuthProviderFacebook();
-    // const identityServer = configureOAuthProviderIdentityServer();
-
     configureTnsOAuth([facebookProvider]);
 }
 

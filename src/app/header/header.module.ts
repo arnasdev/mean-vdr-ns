@@ -20,8 +20,4 @@ import { ToastModule } from "../toast/toast.module";
         NO_ERRORS_SCHEMA
     ]
   })
-  export class HeaderModule {
-
-
-
-  }
+  export class HeaderModule {}

@@ -28,7 +28,6 @@
     padding: 0;
     margin: 0;
     text-align: right;
-
 }
 
 .settings-item.email{
@@ -37,13 +36,11 @@
 }
 
 .settings-divider {
-    /* border-bottom-width: 15px; */
     border-top-width: 5px;
     border-color: rgb(200,200,200);
     height:35px;
     width: 100%;
     background-color:rgb(230,230,230);
-    /* border-color:   rgb(200,200,200); */
 }
 
 .settings-header {
@@ -54,7 +51,6 @@
     padding-left: 40%;
     border-bottom-width: 1px;
     border-color:   rgb(200,200,200);
-
 }
 
 .main {

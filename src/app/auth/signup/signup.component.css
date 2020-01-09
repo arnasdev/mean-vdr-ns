@@ -4,18 +4,9 @@
 
 .body {
     background: linear-gradient(45deg, #3fa0eb, #1e7ac0);
-
 }
 
 .index-img {
-    /* display: inline-block;
-    background-image:url("~/img/vdr-index.jpg");
-    background-size: 100%;
-    width: 100%;
-    background-repeat: no-repeat;
-    background-clip: unset;
-    background-position: left top; */
-
     opacity: .4;
 }
 
@@ -72,18 +63,11 @@
 
 }
 
-
 .auth-text.login{
 font-size: 20px;
 color: rgb(253, 208, 243);
 margin-top:0px;
 }
-
-
-/* .auth-hr {
-    background-color: rgb(200,200,200);
-    margin-top: 30px;
-} */
 
 .fullwidth {
     width: 100%;
