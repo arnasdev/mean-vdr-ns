@@ -129,14 +129,14 @@ exports.facebookDetails = (req, res, next) => {
           if(!user.fbLinked){
             user.fbLinked = false;
           }
-          res.status(200).json({
+          return res.status(200).json({
             facebookEmail: facebookEmail,
             emailExists: true,
             fbLinked: user.fbLinked,
             socialUser: user.socialUser
           });
         } else {
-          res.status(200).json({
+          return res.status(200).json({
             facebookEmail: facebookEmail,
             emailExists: false,
             fbLinked: false,
@@ -151,17 +151,18 @@ exports.facebookDetails = (req, res, next) => {
 exports.facebookLink = (req, res, next) => {
   let email = req.body.email;
   let facebookEmail = req.body.facebookEmail;
-  console.log(facebookEmail);
   let fetchedUser;
   let duplicateError = false;
 
-  User.findOne({email: email}).then(user => {
+  User.findOne({email: email})
+  .then(user => {
     if(!user){
       console.log("res 400");
-      res.status(400).json({message:"Error linking facebook account"});
+      return res.status(400).json({message:"Error linking facebook account"});
     }
     fetchedUser = user;
-  }).then(() => {
+  })
+  .then(() => {
     fetchedUser.socialUser = false;
     fetchedUser.fbLinked = true;
     if(facebookEmail){
@@ -175,24 +176,37 @@ exports.facebookLink = (req, res, next) => {
         }
       }).then(() => {
         if(duplicateError){
-          res.status(400).json({
+          return res.status(400).json({
             message:"Account exists for both emails"
           });
-          return;
         }
         User.updateOne({_id: fetchedUser._id}, fetchedUser).then(result => {
-          res.status(200).json({
+          return res.status(200).json({
             message:"Updated user with facebook link"
           })
         }).catch( err => {
-          res.status(400).json({
+          return res.status(400).json({
             message:"Error updating user with facebook link"
           })
         });
       });
     }
+    else{
+      fetchedUser.socialUser = false;
+      fetchedUser.fbLinked = true;
+
+      User.updateOne({_id: fetchedUser._id}, fetchedUser).then(result => {
+        return res.status(200).json({
+          message:"Updated user with facebook link"
+        })
+      }).catch( err => {
+        return res.status(400).json({
+          message:"Error updating user with facebook link"
+        })
+      });
+    }
   }).catch(err => {
-    res.status(400).json({
+    return res.status(400).json({
       message: "Error updating user"
     });
   })

@@ -69,7 +69,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
         this.authSubscription.unsubscribe();
     }
 
-    toggleVisibility(state)
+    toggleVisibility(collapsable, state)
     {
         this.changeState(state);
     }
@@ -93,6 +93,9 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     }
 
     changeState(obj) {
+
+        console.log("changestte");
+
         if (this.allowMultiple === false) {
 			if (this.current === undefined) {
 				this.current = obj;

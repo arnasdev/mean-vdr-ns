@@ -196,6 +196,9 @@ export class AuthService {
                 console.log("Logging in user with social only account");
                 this.oAuthLogin(accessToken, response.facebookEmail);
             }
+            else if(response.emailExists){
+                this.routerExtensions.navigate(['/auth/login'], { queryParams: {message: "Log in and go to settings to link your Facebook", toastType: "info" }, clearHistory: true});
+            }
             else{
                 console.log("Creating social only account for user");
                 this.oAuthLogin(accessToken, response.facebookEmail);
@@ -209,6 +212,8 @@ export class AuthService {
     let facebookEmail;
     let data = { email: email };
 
+    console.log("linking facebook");
+
     this.client = new TnsOAuthClient("facebook");
     this.client.loginWithCompletion(
         (tokenResult: ITnsOAuthTokenResult, error) => {
@@ -218,8 +223,9 @@ export class AuthService {
                 accessToken = tokenResult.accessToken;
                 this.getOauthUserDetails(accessToken).subscribe(response => {
                     facebookEmail = response.facebookEmail;
-                    if(response.facebookEmail === this.email){
+                    if(response.facebookEmail === email){
                         // VDR & Facebook use same email, connect accounts
+                        let data = { email: email };
                         this.http.post(BACKEND_URL + 'fb-link', data).subscribe(() => {
                             this.fbLinked = true;
                             this.socialUser = false;
