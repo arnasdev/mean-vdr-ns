@@ -1,7 +1,7 @@
 {
   "env": {
     "MONGO_ATLAS_PW": "DX2JqIE4wHiO2j8q",
-    "JWT_KEY": "secret_this_should_be_longer",
+    "JWT_KEY": "oyjQbgDLXMCBgiCfY3bEG5irwraYHrNSSuLAmUnvzHXpqaOO3qMJfzCdQQAqurAAHuwb6hYBmMcEVarlW7TWaM3iJdBkhw5A4PkrqqKKzOaO0AZcEtXEGHLfIbNYZL",
     "GOOGLE_CLOUD_PROJECT": "mean-vdr-ns"
   }
 }

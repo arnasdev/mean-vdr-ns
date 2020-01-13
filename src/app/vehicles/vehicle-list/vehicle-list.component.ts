@@ -157,7 +157,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     }
 
     shareApp() {
-        SocialShare.shareUrl("www.google.ie", "Check out the Vehicle Reminders app!", "Vehicle Reminders");
+        SocialShare.shareUrl("https://play.google.com/store/apps/details?id=org.nativescript.meanvdrns", "Check out the Vehicle Reminders app!", "Vehicle Reminders");
     }
 
     bookNct(){

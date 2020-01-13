@@ -10,8 +10,8 @@ import { TnsOAuthClient, ITnsOAuthTokenResult } from "nativescript-oauth2";
 import { AuthData } from './auth-data.model';
 import { NotificationService } from "../notification/notification.service";
 
-//const BACKEND_URL = 'http://vdrapi-env.d5xyfzxdwi.eu-west-1.elasticbeanstalk.com/api/user/';
-const BACKEND_URL = 'http://192.168.137.2:3000/api/user/';
+const BACKEND_URL = 'http://vdrapi-env.d5xyfzxdwi.eu-west-1.elasticbeanstalk.com/api/user/';
+// const BACKEND_URL = 'http://192.168.137.2:3000/api/user/';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
